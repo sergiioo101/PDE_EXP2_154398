@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dogsListFragment">
+
+    <fragment
+        android:id="@+id/dogsListFragment"
+        android:name="com.example.pde_exp2_154398.ui.dogs.DogsListFragment"
+        android:label="@string/dogs_list"
+        tools:layout="@layout/fragment_dogs_list">
+        <action
+            android:id="@+id/action_dogsList_to_dogDetail"
+            app:destination="@id/dogDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dogDetailFragment"
+        android:name="com.example.pde_exp2_154398.ui.dogs.DogDetailFragment"
+        android:label="Detalle del Perro"
+        tools:layout="@layout/fragment_dog_detail">
+        <argument
+            android:name="dogId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.pde_exp2_154398.ui.settings.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>
+

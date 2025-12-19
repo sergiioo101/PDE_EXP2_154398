@@ -1,0 +1,35 @@
+CHECKLIST DE CONFIGURACIÓN FIREBASE
+====================================
+
+✅ DEPENDENCIAS GRADLE
+   - Plugin google-services configurado en app/build.gradle.kts
+   - Firebase BOM agregado
+   - Firebase Auth agregado
+
+✅ CÓDIGO
+   - AuthViewModel implementado
+   - LoginActivity implementada
+   - RegisterActivity implementada
+   - Validación local de contraseña implementada
+   - Manejo de errores de Firebase implementado
+
+⏳ PENDIENTE (TÚ DEBES HACERLO):
+   [ ] 1. Crear proyecto en Firebase Console
+   [ ] 2. Agregar app Android con package: com.example.pde_exp2_154398
+   [ ] 3. Descargar google-services.json
+   [ ] 4. Colocar google-services.json en app/ (raíz del módulo app)
+   [ ] 5. Configurar política de contraseña en Firebase:
+       - Mínimo 8 caracteres
+       - Mayúsculas requeridas
+       - Minúsculas requeridas
+       - Números requeridos
+   [ ] 6. Habilitar Email/Password en Authentication → Sign-in method
+   [ ] 7. Sincronizar proyecto (File → Sync Project with Gradle Files)
+
+UBICACIÓN DEL ARCHIVO:
+   app/google-services.json  ← Coloca el archivo aquí
+
+VERIFICACIÓN:
+   Después de completar los pasos, el proyecto debería compilar sin errores
+   y podrás registrar e iniciar sesión con usuarios.
+

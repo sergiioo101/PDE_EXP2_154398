@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">PDE_EXP2_154398</string>
+    
+    <!-- Auth -->
+    <string name="login">Iniciar Sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="register_button">Registrarse</string>
+    <string name="go_to_register">¿No tienes cuenta? Regístrate</string>
+    <string name="go_to_login">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="login_error">Error al iniciar sesión</string>
+    <string name="register_error">Error al registrarse</string>
+    <string name="password_policy_error">La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números</string>
+    <string name="email_required">El email es requerido</string>
+    <string name="password_required">La contraseña es requerida</string>
+    <string name="invalid_email">Email inválido</string>
+    
+    <!-- Main -->
+    <string name="settings">Configuración</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="dogs_list">Lista de Perros</string>
+    
+    <!-- Settings -->
+    <string name="view_mode">Modo de Visualización</string>
+    <string name="grid_mode">Vista de Cuadrícula</string>
+    <string name="list_mode">Vista de Lista</string>
+    
+    <!-- Dog Detail -->
+    <string name="dog_name">Nombre</string>
+    <string name="dog_breed">Raza</string>
+    <string name="dog_characteristics">Características</string>
 </resources>

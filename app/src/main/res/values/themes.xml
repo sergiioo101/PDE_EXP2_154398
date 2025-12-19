@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.PDE_EXP2_154398" parent="Base.Theme.PDE_EXP2_154398" />
+    
+    <style name="Theme.PDE_EXP2_154398.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    
+    <style name="Theme.PDE_EXP2_154398.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
