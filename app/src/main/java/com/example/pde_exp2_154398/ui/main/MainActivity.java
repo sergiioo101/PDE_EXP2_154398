@@ -8,12 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pde_exp2_154398.R;
 import com.example.pde_exp2_154398.ui.auth.LoginActivity;
-import com.example.pde_exp2_154398.viewmodel.AuthViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
     private Button buttonLogout;
-    private AuthViewModel authViewModel;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
