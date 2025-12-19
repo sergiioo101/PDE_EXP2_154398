@@ -57,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
         
         if (id == R.id.menu_settings) {
             if (navController != null) {
-                navController.navigate(R.id.settingsFragment);
+                int currentId = navController.getCurrentDestination() != null ? 
+                    navController.getCurrentDestination().getId() : -1;
+                if (currentId == R.id.dogsListFragment) {
+                    navController.navigate(R.id.action_dogsList_to_settings);
+                } else {
+                    navController.navigate(R.id.settingsFragment);
+                }
             }
             return true;
         } else if (id == R.id.menu_logout) {

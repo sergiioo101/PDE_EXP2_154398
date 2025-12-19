@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_dogsList_to_dogDetail"
             app:destination="@id/dogDetailFragment" />
+        <action
+            android:id="@+id/action_dogsList_to_settings"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment

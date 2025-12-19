@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,8 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pde_exp2_154398.R;
+import com.example.pde_exp2_154398.data.Dog;
 import com.example.pde_exp2_154398.ui.settings.SettingsFragment;
 import com.example.pde_exp2_154398.viewmodel.DogViewModel;
+
+import java.util.List;
 
 public class DogsListFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -40,19 +44,16 @@ public class DogsListFragment extends Fragment {
         
         viewModel = new ViewModelProvider(this).get(DogViewModel.class);
         
-        // Configurar adapter inicial
         boolean isGridMode = SettingsFragment.VIEW_MODE_GRID.equals(
                 SettingsFragment.getViewMode(requireContext()));
         setupRecyclerView(isGridMode);
         
-        // Observar cambios en los perros
         viewModel.getAllDogs().observe(getViewLifecycleOwner(), dogs -> {
-            if (dogs != null) {
+            if (dogs != null && adapter != null) {
                 adapter.setDogs(dogs);
             }
         });
         
-        // Observar cambios en las preferencias
         SharedPreferences prefs = requireContext().getSharedPreferences(
                 SettingsFragment.PREFS_NAME, Context.MODE_PRIVATE);
         preferenceChangeListener = (sharedPreferences, key) -> {
@@ -60,28 +61,47 @@ public class DogsListFragment extends Fragment {
                 boolean newGridMode = SettingsFragment.VIEW_MODE_GRID.equals(
                         SettingsFragment.getViewMode(requireContext()));
                 setupRecyclerView(newGridMode);
+                if (adapter != null && viewModel != null) {
+                    LiveData<List<Dog>> dogsLiveData = viewModel.getAllDogs();
+                    if (dogsLiveData.getValue() != null) {
+                        adapter.setDogs(dogsLiveData.getValue());
+                    }
+                }
             }
         };
         prefs.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
     }
     
     private void setupRecyclerView(boolean isGridMode) {
+        if (recyclerView == null) {
+            return;
+        }
+        
         if (isGridMode) {
             recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         }
         
-        if (adapter == null) {
-            adapter = new DogAdapter(dog -> {
-                Bundle bundle = new Bundle();
-                bundle.putInt("dogId", dog.getId());
-                Navigation.findNavController(requireView())
-                        .navigate(R.id.action_dogsList_to_dogDetail, bundle);
-            }, isGridMode);
-            recyclerView.setAdapter(adapter);
-        } else {
-            adapter.setGridMode(isGridMode);
+        adapter = new DogAdapter(dog -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("dogId", dog.getId());
+            Navigation.findNavController(requireView())
+                    .navigate(R.id.action_dogsList_to_dogDetail, bundle);
+        }, isGridMode);
+        recyclerView.setAdapter(adapter);
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (recyclerView != null && adapter == null && viewModel != null) {
+            boolean isGridMode = SettingsFragment.VIEW_MODE_GRID.equals(
+                    SettingsFragment.getViewMode(requireContext()));
+            setupRecyclerView(isGridMode);
+            if (viewModel.getAllDogs().getValue() != null) {
+                adapter.setDogs(viewModel.getAllDogs().getValue());
+            }
         }
     }
     
@@ -93,6 +113,8 @@ public class DogsListFragment extends Fragment {
                     SettingsFragment.PREFS_NAME, Context.MODE_PRIVATE);
             prefs.unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
         }
+        adapter = null;
+        recyclerView = null;
     }
 }
 
