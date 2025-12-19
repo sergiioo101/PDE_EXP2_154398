@@ -15,7 +15,6 @@ import com.example.pde_exp2_154398.ui.main.MainActivity;
 import com.example.pde_exp2_154398.viewmodel.AuthViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout textInputLayoutEmail;

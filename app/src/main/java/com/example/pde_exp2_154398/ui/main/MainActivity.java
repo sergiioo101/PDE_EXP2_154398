@@ -27,23 +27,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // Configurar Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         
-        // Verificar si hay usuario autenticado
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth.getCurrentUser() == null) {
             navigateToLogin();
             return;
         }
         
-        // Configurar Navigation
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.dogsListFragment
+        ).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         
-        // Inicializar ViewModel para logout
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
     }
     
@@ -58,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         
         if (id == R.id.menu_settings) {
-            navController.navigate(R.id.settingsFragment);
+            if (navController != null) {
+                navController.navigate(R.id.settingsFragment);
+            }
             return true;
         } else if (id == R.id.menu_logout) {
             authViewModel.logout();
@@ -66,13 +66,19 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
+        if (navController != null) {
+            return NavigationUI.onNavDestinationSelected(item, navController)
+                    || super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
     }
     
     @Override
     public boolean onSupportNavigateUp() {
-        return navController.navigateUp() || super.onSupportNavigateUp();
+        if (navController != null) {
+            return navController.navigateUp();
+        }
+        return super.onSupportNavigateUp();
     }
     
     private void navigateToLogin() {

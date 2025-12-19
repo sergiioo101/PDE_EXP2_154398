@@ -53,8 +53,6 @@ public class AuthViewModel extends AndroidViewModel {
                         if (task.getException() != null) {
                             Exception exception = task.getException();
                             if (exception instanceof FirebaseAuthWeakPasswordException) {
-                                FirebaseAuthWeakPasswordException weakPasswordException = 
-                                    (FirebaseAuthWeakPasswordException) exception;
                                 errorLiveData.setValue("La contraseña no cumple con la política de seguridad. " +
                                     "Debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números.");
                             } else {

@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase; // Import SupportSQLiteDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class, "dogs_database")
                             .addCallback(new RoomDatabase.Callback() {
                                 @Override
-                                public void onCreate(SupportSQLiteDatabase db) { // Use the imported class
+                                public void onCreate(SupportSQLiteDatabase db) {
                                     super.onCreate(db);
                                     databaseWriteExecutor.execute(() -> {
                                         List<Dog> initialDogs = Arrays.asList(
@@ -61,7 +61,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     });
                                 }
                             })
-                            .build(); // Correct position for .build()
+                            .build();
                 }
             }
         }
