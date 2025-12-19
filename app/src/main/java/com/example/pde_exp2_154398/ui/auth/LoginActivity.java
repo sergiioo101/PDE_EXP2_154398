@@ -4,11 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,13 +13,17 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.pde_exp2_154398.R;
 import com.example.pde_exp2_154398.ui.main.MainActivity;
 import com.example.pde_exp2_154398.viewmodel.AuthViewModel;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private Button loginButton;
-    private TextView registerLink;
+    private TextInputLayout textInputLayoutEmail;
+    private TextInputLayout textInputLayoutPassword;
+    private TextInputEditText editTextEmail;
+    private TextInputEditText editTextPassword;
+    private Button buttonLogin;
+    private TextView textViewRegister;
     private AuthViewModel authViewModel;
     
     @Override
@@ -30,10 +31,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         
-        emailEditText = findViewById(R.id.editTextEmail);
-        passwordEditText = findViewById(R.id.editTextPassword);
-        loginButton = findViewById(R.id.buttonLogin);
-        registerLink = findViewById(R.id.textViewRegister);
+        textInputLayoutEmail = findViewById(R.id.textInputLayoutEmail);
+        textInputLayoutPassword = findViewById(R.id.textInputLayoutPassword);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonLogin = findViewById(R.id.buttonLogin);
+        textViewRegister = findViewById(R.id.textViewRegister);
         
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         
@@ -47,13 +50,13 @@ public class LoginActivity extends AppCompatActivity {
         // Observar errores
         authViewModel.getErrorLiveData().observe(this, errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
-                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+                textInputLayoutPassword.setError(errorMessage);
             }
         });
         
-        loginButton.setOnClickListener(v -> attemptLogin());
+        buttonLogin.setOnClickListener(v -> attemptLogin());
         
-        registerLink.setOnClickListener(v -> {
+        textViewRegister.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
@@ -65,8 +68,12 @@ public class LoginActivity extends AppCompatActivity {
     }
     
     private void attemptLogin() {
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString();
+        // Limpiar errores previos
+        textInputLayoutEmail.setError(null);
+        textInputLayoutPassword.setError(null);
+        
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString();
         
         if (validateInput(email, password)) {
             authViewModel.login(email, password);
@@ -74,25 +81,25 @@ public class LoginActivity extends AppCompatActivity {
     }
     
     private boolean validateInput(String email, String password) {
-        if (TextUtils.isEmpty(email)) {
-            emailEditText.setError(getString(R.string.email_required));
-            emailEditText.requestFocus();
-            return false;
-        }
+        boolean isValid = true;
         
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailEditText.setError(getString(R.string.invalid_email));
-            emailEditText.requestFocus();
-            return false;
+        if (TextUtils.isEmpty(email)) {
+            textInputLayoutEmail.setError(getString(R.string.email_required));
+            editTextEmail.requestFocus();
+            isValid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            textInputLayoutEmail.setError(getString(R.string.invalid_email));
+            editTextEmail.requestFocus();
+            isValid = false;
         }
         
         if (TextUtils.isEmpty(password)) {
-            passwordEditText.setError(getString(R.string.password_required));
-            passwordEditText.requestFocus();
-            return false;
+            textInputLayoutPassword.setError(getString(R.string.password_required));
+            editTextPassword.requestFocus();
+            isValid = false;
         }
         
-        return true;
+        return isValid;
     }
     
     private void navigateToMain() {
@@ -102,4 +109,3 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 }
-

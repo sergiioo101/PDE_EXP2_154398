@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class AuthViewModel extends AndroidViewModel {
@@ -50,11 +51,14 @@ public class AuthViewModel extends AndroidViewModel {
                         userLiveData.setValue(user);
                     } else {
                         if (task.getException() != null) {
-                            String errorMessage = task.getException().getMessage();
-                            if (errorMessage != null && errorMessage.contains("WEAK_PASSWORD")) {
-                                errorLiveData.setValue("La contraseña no cumple con la política de seguridad. Debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números.");
+                            Exception exception = task.getException();
+                            if (exception instanceof FirebaseAuthWeakPasswordException) {
+                                FirebaseAuthWeakPasswordException weakPasswordException = 
+                                    (FirebaseAuthWeakPasswordException) exception;
+                                errorLiveData.setValue("La contraseña no cumple con la política de seguridad. " +
+                                    "Debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas y números.");
                             } else {
-                                errorLiveData.setValue(errorMessage);
+                                errorLiveData.setValue(exception.getMessage());
                             }
                         }
                     }
